@@ -1,8 +1,10 @@
 import React from 'react';
 import { keyType } from './App';
+import Button from './module/components/Button/Button';
+import Input from './module/components/Input/Input';
 
 type TaskType = {
-  id: number;
+  id: string;
   title: string;
   isDone: boolean;
 };
@@ -10,31 +12,46 @@ type TaskType = {
 type PropsType = {
   title: string;
   tasks: Array<TaskType>;
-  removeTask: (id: number) => void;
+  removeTask: (id: string) => void;
   changeFilter: (button: keyType) => void;
+  addTask: (newTitle: string) => void;
 };
 
 export function Todolist(props: PropsType) {
+  const onChangeFilterAll = () => {
+    props.changeFilter('all');
+  };
+
+  const onChangeFilterActivel = () => {
+    props.changeFilter('active');
+  };
+
+  const onChangeFilterCompleted = () => {
+    props.changeFilter('completed');
+  };
+
   return (
     <div>
       <h3>{props.title}</h3>
       <div>
-        <input />
-        <button>+</button>
+        <Input callBack={props.addTask} />
       </div>
       <ul>
-        {props.tasks.map(list => (
-          <li key={list.id}>
-            <button onClick={() => props.removeTask(list.id)}>X</button>
-            <input type="checkbox" defaultChecked={list.isDone} />
-            <span>{list.title}</span>
-          </li>
-        ))}
+        {props.tasks.map(list => {
+          const removeTask = () => props.removeTask(list.id);
+          return (
+            <li key={list.id}>
+              <Button callBack={removeTask} value={'X'} />
+              <input type="checkbox" defaultChecked={list.isDone} />
+              <span>{list.title}</span>
+            </li>
+          );
+        })}
       </ul>
       <div>
-        <button onClick={() => props.changeFilter('all')}>All</button>
-        <button onClick={() => props.changeFilter('active')}>Active</button>
-        <button onClick={() => props.changeFilter('completed')}>Completed</button>
+        <Button callBack={onChangeFilterAll} value={'All'} />
+        <Button callBack={onChangeFilterActivel} value={'Active'} />
+        <Button callBack={onChangeFilterCompleted} value={'Completed'} />
       </div>
     </div>
   );
