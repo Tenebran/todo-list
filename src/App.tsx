@@ -5,64 +5,97 @@ import { v1 } from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
+type todoListType = {
+  id: string;
+  title: string;
+  filter: FilterValuesType;
+};
+
 function App() {
-  let [tasks, setTasks] = useState([
-    { id: v1(), title: 'HTML&CSS', isDone: true },
-    { id: v1(), title: 'JS', isDone: true },
-    { id: v1(), title: 'ReactJS', isDone: false },
-    { id: v1(), title: 'Rest API', isDone: false },
-    { id: v1(), title: 'GraphQL', isDone: false },
+  const todoListID1 = v1();
+  const todoListID2 = v1();
+
+  const [todolist, setTodolist] = useState<Array<todoListType>>([
+    { id: todoListID1, title: 'What To Learn', filter: 'all' },
+    { id: todoListID2, title: 'Movie', filter: 'completed' },
   ]);
 
-  function removeTask(id: string) {
-    let filteredTasks = tasks.filter(t => t.id !== id);
-    setTasks(filteredTasks);
+  let [tasks, setTasks] = useState({
+    [todoListID1]: [
+      { id: v1(), title: 'HTML&CSS', isDone: true },
+      { id: v1(), title: 'JS', isDone: true },
+      { id: v1(), title: 'ReactJS', isDone: false },
+      { id: v1(), title: 'Rest API', isDone: false },
+      { id: v1(), title: 'GraphQL', isDone: false },
+    ],
+    [todoListID2]: [
+      { id: v1(), title: 'Terminator', isDone: true },
+      { id: v1(), title: 'Marvel', isDone: true },
+      { id: v1(), title: 'Iron Man', isDone: false },
+      { id: v1(), title: 'Spider Man', isDone: false },
+    ],
+  });
+
+  function removeTask(id: string, todoListID: string) {
+    tasks[todoListID] = tasks[todoListID].filter(t => t.id !== id);
+    setTasks({ ...tasks });
   }
 
-  function addTask(title: string) {
+  function addTask(title: string, todoListID: string) {
     let task = { id: v1(), title: title, isDone: false };
-    let newTasks = [task, ...tasks];
-    setTasks(newTasks);
+    tasks[todoListID] = [task, ...tasks[todoListID]];
+    setTasks({ ...tasks });
   }
 
-  let [filter, setFilter] = useState<FilterValuesType>('all');
+  // let [filter, setFilter] = useState<FilterValuesType>('all');
 
-  let tasksForTodolist = tasks;
-
-  function changeTask(id: string) {
-    let newTask = tasks.find(list => list.id === id);
+  function changeTask(id: string, todoListID: string) {
+    let task = tasks[todoListID];
+    let newTask = task.find(list => list.id === id);
     if (newTask) {
       newTask.isDone = !newTask.isDone;
+      setTasks({ ...tasks });
     }
-
-    let copy = [...tasks];
-    setTasks(copy);
   }
 
-  if (filter === 'active') {
-    tasksForTodolist = tasks.filter(t => t.isDone === false);
-  }
-  if (filter === 'completed') {
-    tasksForTodolist = tasks.filter(t => t.isDone === true);
-  }
-
-  function changeFilter(value: FilterValuesType) {
-    setFilter(value);
+  function changeFilter(value: FilterValuesType, todoListID: string) {
+    let newTodolist = todolist.find(list => list.id === todoListID);
+    if (newTodolist) {
+      newTodolist.filter = value;
+    }
+    setTodolist([...todolist]);
   }
 
-  return (
-    <div className="App">
+  function removeTodolist(todoListID: string) {
+    setTodolist(todolist.filter(todo => todo.id !== todoListID));
+    delete tasks[todoListID];
+  }
+
+  const todoListComponents = todolist.map(list => {
+    let tasksForTodolist = tasks[list.id];
+    if (list.filter === 'active') {
+      tasksForTodolist = tasks[list.id].filter(t => t.isDone === false);
+    }
+    if (list.filter === 'completed') {
+      tasksForTodolist = tasks[list.id].filter(t => t.isDone === true);
+    }
+    return (
       <Todolist
-        title="What to learn"
+        key={list.id}
+        todoListID={list.id}
+        removeTodolist={removeTodolist}
+        title={list.title}
         tasks={tasksForTodolist}
         removeTask={removeTask}
         changeFilter={changeFilter}
         addTask={addTask}
         changeTask={changeTask}
-        filter={filter}
+        filter={list.filter}
       />
-    </div>
-  );
+    );
+  });
+
+  return <div className="App">{todoListComponents}</div>;
 }
 
 export default App;
