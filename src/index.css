@@ -24,3 +24,13 @@ code {
 .is-done {
   opacity: 0.5;
 }
+
+.add-todolist {
+  margin-top: 100px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.paper-wrapepr {
+  padding: 10px;
+}

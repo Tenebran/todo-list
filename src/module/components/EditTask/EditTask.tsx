@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import React, { ChangeEvent, useState } from 'react';
 
 type EditTaskProps = {
@@ -21,7 +22,7 @@ export default function EditTask(props: EditTaskProps) {
   };
 
   return editMode ? (
-    <input value={title} autoFocus onBlur={offEditMode} onChange={onChangeHandler}></input>
+    <TextField value={title} autoFocus onBlur={offEditMode} onChange={onChangeHandler}></TextField>
   ) : (
     <span onDoubleClick={onEditMode} className={props.name ? 'is-done' : ''}>
       {props.title}
