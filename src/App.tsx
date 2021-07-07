@@ -59,8 +59,6 @@ function App() {
     setTasks({ ...tasks });
   }
 
-  // let [filter, setFilter] = useState<FilterValuesType>('all');
-
   function changeTask(id: string, todoListID: string) {
     let task = tasks[todoListID];
     let newTask = task.find(list => list.id === id);
