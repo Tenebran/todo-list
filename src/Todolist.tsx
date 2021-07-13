@@ -2,8 +2,8 @@ import { Button, Checkbox, createStyles, IconButton, makeStyles, Theme } from '@
 import { Delete } from '@material-ui/icons';
 import React from 'react';
 import { FilterValuesType } from './App';
-import AddItemForm from './module/components/AddItemForm/AddItemForm';
-import EditTask from './module/components/EditTask/EditTask';
+import AddItemForm from './modules/components/AddItemForm/AddItemForm';
+import EditTask from './modules/components/EditTask/EditTask';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
