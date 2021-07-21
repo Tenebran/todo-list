@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type TaskType = {
+export type TaskType = {
   id: string;
   title: string;
   isDone: boolean;

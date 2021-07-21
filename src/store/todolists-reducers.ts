@@ -9,6 +9,7 @@ export type RemoveTodolistsAT = {
 export type AddTodolistAT = {
   type: 'ADD-TODOLIST';
   title: string;
+  todoListId: string;
 };
 
 export type ChangeTodolistTitleAT = {
@@ -55,6 +56,14 @@ export const todoListsReducers = (
         list.id === action.todolistID ? { ...list, filter: action.value } : list
       );
     }
+    case 'ADD-TODOLIST': {
+      const newTodolist: todoListType = {
+        id: action.todoListId,
+        title: action.title,
+        filter: 'all',
+      };
+      return [...todolists, newTodolist];
+    }
 
     default: {
       return todolists;
@@ -67,7 +76,7 @@ export const removeTodoListAC = (todolistID: string): RemoveTodolistsAT => {
 };
 
 export const addTodolistAC = (title: string): AddTodolistAT => {
-  return { type: 'ADD-TODOLIST', title };
+  return { type: 'ADD-TODOLIST', title, todoListId: v1() };
 };
 
 export const changeTodolistTitleAC = (todolistID: string, title: string): ChangeTodolistTitleAT => {
