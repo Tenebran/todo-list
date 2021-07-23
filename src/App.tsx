@@ -13,6 +13,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { TaskType } from './Todolist';
 import { Menu } from '@material-ui/icons';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -21,6 +22,10 @@ export type todoListType = {
   id: string;
   title: string;
   filter: FilterValuesType;
+};
+
+export type TasksStateType = {
+  [key: string]: Array<TaskType>;
 };
 
 function App() {
@@ -32,7 +37,7 @@ function App() {
     { id: todoListID2, title: 'Movie', filter: 'all' },
   ]);
 
-  const [tasks, setTasks] = useState({
+  const [tasks, setTasks] = useState<TasksStateType>({
     [todoListID1]: [
       { id: v1(), title: 'HTML&CSS', isDone: true },
       { id: v1(), title: 'JS', isDone: true },
