@@ -1,6 +1,5 @@
-import {} from './todolists-reducers';
-import { v1 } from 'uuid';
-import { FilterValuesType, TasksStateType, todoListType } from '../App';
+import { addTodolistAC, removeTodoListAC } from './todolists-reducers';
+import { TasksStateType } from '../App';
 import {
   removeTaskAC,
   tasksReducers,
@@ -114,4 +113,60 @@ test('status of specified task should be changed', () => {
 
   expect(endState['todolistId2'][1].title).toBe('New title');
   expect(endState['todolistId1'][1].title).toBe('JS');
+});
+
+test('new property with array should be added when new todolis is added', () => {
+  const startState: TasksStateType = {
+    todolist1: [
+      { id: '1', title: 'CSS', isDone: true },
+      { id: '2', title: 'JS', isDone: true },
+      { id: '3', title: 'React', isDone: false },
+      { id: '4', title: 'Redux', isDone: false },
+    ],
+
+    todolist2: [
+      { id: '1', title: 'Terminator', isDone: true },
+      { id: '2', title: 'Marvel', isDone: true },
+      { id: '3', title: 'Iron Man', isDone: false },
+      { id: '4', title: 'Spider Man', isDone: false },
+    ],
+  };
+
+  const action = addTodolistAC('new todolist');
+  const endState = tasksReducers(startState, action);
+
+  const keys = Object.keys(endState);
+  const newKey = keys.find(k => k != 'todolist1' && k != 'todolist2');
+
+  if (!newKey) {
+    throw Error('new key should be added');
+  }
+  expect(keys.length).toBe(3);
+  expect(endState[newKey]).toEqual([]);
+});
+
+test('property with todolistId should be deleted', () => {
+  const startState: TasksStateType = {
+    todolist1: [
+      { id: '1', title: 'CSS', isDone: true },
+      { id: '2', title: 'JS', isDone: true },
+      { id: '3', title: 'React', isDone: false },
+      { id: '4', title: 'Redux', isDone: false },
+    ],
+
+    todolist2: [
+      { id: '1', title: 'Terminator', isDone: true },
+      { id: '2', title: 'Marvel', isDone: true },
+      { id: '3', title: 'Iron Man', isDone: false },
+      { id: '4', title: 'Spider Man', isDone: false },
+    ],
+  };
+
+  const action = removeTodoListAC('todolist2');
+  const endState = tasksReducers(startState, action);
+
+  const keys = Object.keys(endState);
+
+  expect(keys.length).toBe(1);
+  expect(endState['todolist2']).not.toBeDefined();
 });
