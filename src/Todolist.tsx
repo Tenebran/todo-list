@@ -27,12 +27,12 @@ type PropsType = {
   removeTask: (taskId: string, TodolistId: string) => void;
   changeFilter: (value: FilterValuesType, TodolistId: string) => void;
   addTask: (title: string, TodolistId: string) => void;
-  changeTask: (id: string, TodolistId: string) => void;
   filter: FilterValuesType;
   removeTodolist: (id: string) => void;
   todoListID: string;
   changeTaskTitle: (taskid: string, title: string, todoListID: string) => void;
   changeTodoListTitle: (title: string, TodolistId: string) => void;
+  changeTaskStatus: (id: string, isDone: boolean, todoListID: string) => void;
 };
 
 export function Todolist(props: PropsType) {
@@ -69,7 +69,9 @@ export function Todolist(props: PropsType) {
                 size={'small'}
                 color={'primary'}
                 checked={t.isDone}
-                onChange={e => props.changeTask(t.id, props.todoListID)}
+                onChange={e =>
+                  props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID)
+                }
               />
 
               <EditTask title={t.title} name={t.isDone} changeTaskTitle={changeTaskTitle} />
