@@ -1,6 +1,11 @@
 import { v1 } from 'uuid';
 import { FilterValuesType, todoListType } from '../App';
 
+export const REMOVE_TODOLIST = 'REMOVE_TODOLIST';
+export const ADD_TODOLIST = 'ADD_TODOLIST';
+export const CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE';
+export const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
+
 type ActionType =
   | ReturnType<typeof removeTodoListAC>
   | ReturnType<typeof addTodolistAC>
@@ -20,22 +25,22 @@ export const todoListsReducers = (
   action: ActionType
 ): Array<todoListType> => {
   switch (action.type) {
-    case 'REMOVE-TODOLIST': {
+    case REMOVE_TODOLIST: {
       return todolists.filter(todo => todo.id !== action.todolistID);
     }
 
-    case 'ADD-TODOLIST': {
+    case ADD_TODOLIST: {
       const newTodolist: todoListType = { id: action.id, title: action.title, filter: 'all' };
       return [...todolists, newTodolist];
     }
 
-    case 'CHANGE-TODOLIST-TITLE': {
+    case CHANGE_TODOLIST_TITLE: {
       return todolists.map(list =>
         list.id === action.todolistID ? { ...list, title: action.title } : list
       );
     }
 
-    case 'CHANGE-TODOLIST-FILTER': {
+    case CHANGE_TODOLIST_FILTER: {
       return todolists.map(list =>
         list.id === action.todolistID ? { ...list, filter: action.value } : list
       );
@@ -48,17 +53,17 @@ export const todoListsReducers = (
 };
 
 export const removeTodoListAC = (todolistID: string) => {
-  return { type: 'REMOVE-TODOLIST', todolistID } as const;
+  return { type: REMOVE_TODOLIST, todolistID } as const;
 };
 
 export const addTodolistAC = (title: string) => {
-  return { type: 'ADD-TODOLIST', title, id: v1() } as const;
+  return { type: ADD_TODOLIST, title, id: v1() } as const;
 };
 
 export const changeTodolistTitleAC = (todolistID: string, title: string) => {
-  return { type: 'CHANGE-TODOLIST-TITLE', todolistID, title } as const;
+  return { type: CHANGE_TODOLIST_TITLE, todolistID, title } as const;
 };
 
 export const changeTodolistFilterAC = (todolistID: string, value: FilterValuesType) => {
-  return { type: 'CHANGE-TODOLIST-FILTER', todolistID, value } as const;
+  return { type: CHANGE_TODOLIST_FILTER, todolistID, value } as const;
 };

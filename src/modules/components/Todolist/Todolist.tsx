@@ -1,10 +1,12 @@
-import { Button, Checkbox, createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
+import { Button, createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import React, { useCallback } from 'react';
-import { FilterValuesType } from './App';
-import AddItemForm from './modules/components/AddItemForm/AddItemForm';
-import EditTask from './modules/components/EditTask/EditTask';
-import Task from './modules/components/Task/Task';
+import { useSelector } from 'react-redux';
+import { FilterValuesType } from '../../../App';
+import { AppRootStateType } from '../../../store/store';
+import AddItemForm from '../AddItemForm/AddItemForm';
+import EditTask from '../EditTask/EditTask';
+import Task from '../Task/Task';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +26,6 @@ export type TaskType = {
 
 type PropsType = {
   title: string;
-  tasks: Array<TaskType>;
   removeTask: (taskId: string, TodolistId: string) => void;
   changeFilter: (value: FilterValuesType, TodolistId: string) => void;
   addTask: (title: string, TodolistId: string) => void;
@@ -37,36 +38,39 @@ type PropsType = {
 };
 
 const Todolist = React.memo((props: PropsType) => {
+  let tasks = useSelector<AppRootStateType, Array<TaskType>>(
+    state => state.tasks[props.todoListID]
+  );
+
   const classes = useStyles();
   const addTask = useCallback(
     (title: string) => {
       props.addTask(title, props.todoListID);
     },
-    [props.addTask, props.todoListID]
+    [props]
   );
 
-  const onAllClickHandler = useCallback(
-    () => props.changeFilter('all', props.todoListID),
-    [props.changeFilter]
-  );
+  const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todoListID), [props]);
   const onActiveClickHandler = useCallback(
     () => props.changeFilter('active', props.todoListID),
-    [props.changeFilter]
+    [props]
   );
   const onCompletedClickHandler = useCallback(
     () => props.changeFilter('completed', props.todoListID),
-    []
+    [props]
   );
-  const onCklicDeleteTodoList = () => props.removeTodolist(props.todoListID);
-  const changeTodoListTitleHandler = (title: string) =>
-    props.changeTodoListTitle(title, props.todoListID);
+  const onCklicDeleteTodoList = useCallback(() => props.removeTodolist(props.todoListID), [props]);
+  const changeTodoListTitleHandler = useCallback(
+    (title: string) => props.changeTodoListTitle(title, props.todoListID),
+    [props]
+  );
 
-  let tasksForTodolist = props.tasks;
+  let tasksForTodolist = tasks;
   if (props.filter === 'active') {
-    tasksForTodolist = props.tasks.filter(t => t.isDone === false);
+    tasksForTodolist = tasks.filter(t => t.isDone === false);
   }
   if (props.filter === 'completed') {
-    tasksForTodolist = props.tasks.filter(t => t.isDone === true);
+    tasksForTodolist = tasks.filter(t => t.isDone === true);
   }
 
   return (

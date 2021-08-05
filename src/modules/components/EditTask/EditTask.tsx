@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 
 type EditTaskProps = {
   title: string;
@@ -7,15 +7,15 @@ type EditTaskProps = {
   changeTaskTitle: (title: string) => void;
 };
 
-export default function EditTask(props: EditTaskProps) {
+const EditTask = React.memo((props: EditTaskProps) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   let [title, setTitle] = useState<string>(props.title);
 
   const onEditMode = () => setEditMode(true);
-  const offEditMode = () => {
+  const offEditMode = useCallback(() => {
     props.changeTaskTitle(title);
     setEditMode(false);
-  };
+  }, [props, title]);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
@@ -28,4 +28,6 @@ export default function EditTask(props: EditTaskProps) {
       {props.title}
     </span>
   );
-}
+});
+
+export default EditTask;

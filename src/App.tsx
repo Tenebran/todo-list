@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import './App.css';
-import Todolist from './Todolist';
+import Todolist from './modules/components/Todolist/Todolist';
 import AddItemForm from './modules/components/AddItemForm/AddItemForm';
 import {
   AppBar,
@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { TaskType } from './Todolist';
+import { TaskType } from './modules/components/Todolist/Todolist';
 import { Menu } from '@material-ui/icons';
 import {
   addTodolistAC,
@@ -43,7 +43,6 @@ export type TasksStateType = {
 
 function App() {
   let todolist = useSelector<AppRootStateType, todoListType[]>(state => state.todolists);
-  let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
 
   const dispatch = useDispatch();
 
@@ -112,7 +111,6 @@ function App() {
             todoListID={list.id}
             removeTodolist={removeTodolist}
             title={list.title}
-            tasks={tasks[list.id]}
             removeTask={removeTask}
             changeFilter={changeFilter}
             addTask={addTask}

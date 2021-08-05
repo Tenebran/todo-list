@@ -1,7 +1,7 @@
 import { Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import React from 'react';
-import { TaskType } from '../../../Todolist';
+import { TaskType } from '../Todolist/Todolist';
 import EditTask from '../EditTask/EditTask';
 
 type TaskProps = {
