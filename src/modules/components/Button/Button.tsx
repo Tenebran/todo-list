@@ -5,8 +5,10 @@ type propsType = {
   value: string;
 };
 
-export default function Button(props: propsType) {
+const Button = React.memo((props: propsType) => {
   const onClickHandler = () => props.callBack();
 
   return <button onClick={onClickHandler}>{props.value}</button>;
-}
+});
+
+export default Button;

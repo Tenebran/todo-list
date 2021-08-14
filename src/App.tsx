@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import './App.css';
-import Todolist from './modules/components/Todolist/Todolist';
+import Todolist from './Todolist';
 import AddItemForm from './modules/components/AddItemForm/AddItemForm';
 import {
   AppBar,
@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { TaskType } from './modules/components/Todolist/Todolist';
+import { TaskType } from './Todolist';
 import { Menu } from '@material-ui/icons';
 import {
   addTodolistAC,
@@ -66,6 +66,7 @@ function App() {
     },
     [dispatch]
   );
+
   const changeTaskTitle = useCallback(
     (taskid: string, title: string, todoListID: string) => {
       dispatch(changeTaskTitleAC(taskid, title, todoListID));

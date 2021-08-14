@@ -1,18 +1,6 @@
 import { v1 } from 'uuid';
 import { TasksStateType } from '../App';
-import {
-  addTodolistAC,
-  ADD_TODOLIST,
-  removeTodoListAC,
-  REMOVE_TODOLIST,
-  todoListID1,
-  todoListID2,
-} from './todolists-reducers';
-
-export const REMOVE_TASK = 'REMOVE_TASK';
-export const ADD_TASK = 'ADD-TASK';
-export const CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS';
-export const CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE';
+import { addTodolistAC, removeTodoListAC, todoListID1, todoListID2 } from './todolists-reducers';
 
 type ActionType =
   | ReturnType<typeof removeTaskAC>
@@ -43,23 +31,24 @@ export const tasksReducers = (
   action: ActionType
 ): TasksStateType => {
   switch (action.type) {
-    case REMOVE_TASK: {
+    case 'REMOVE-TASK': {
       return {
         ...state,
         [action.todolistID]: state[action.todolistID].filter(list => list.id !== action.taskID),
       };
     }
 
-    case ADD_TASK: {
+    case 'ADD-TASK': {
       let newTask = [
         { id: action.id, title: action.title, isDone: false },
         ...state[action.todoListID],
       ];
-
-      return { ...state, [action.todoListID]: newTask };
+      {
+        return { ...state, [action.todoListID]: newTask };
+      }
     }
 
-    case CHANGE_TASK_STATUS: {
+    case 'CHANGE-TASK-STATUS': {
       return {
         ...state,
         [action.todoListID]: state[action.todoListID].map(list =>
@@ -68,7 +57,7 @@ export const tasksReducers = (
       };
     }
 
-    case CHANGE_TASK_TITLE: {
+    case 'CHANGE-TASK-TITLE': {
       return {
         ...state,
         [action.todoListID]: state[action.todoListID].map(list =>
@@ -76,14 +65,14 @@ export const tasksReducers = (
         ),
       };
     }
-    case ADD_TODOLIST: {
+    case 'ADD-TODOLIST': {
       return {
         ...state,
         [action.id]: [],
       };
     }
 
-    case REMOVE_TODOLIST: {
+    case 'REMOVE-TODOLIST': {
       let stateCopy = { ...state };
       delete stateCopy[action.todolistID];
       return stateCopy;
@@ -95,17 +84,17 @@ export const tasksReducers = (
 };
 
 export const removeTaskAC = (taskID: string, todolistID: string) => {
-  return { type: REMOVE_TASK, taskID, todolistID } as const;
+  return { type: 'REMOVE-TASK', taskID, todolistID } as const;
 };
 
 export const addTaskAC = (title: string, todoListID: string) => {
-  return { type: ADD_TASK, title, todoListID, id: v1() } as const;
+  return { type: 'ADD-TASK', title, todoListID, id: v1() } as const;
 };
 
 export const changeTaskStatusAC = (taskID: string, isDone: boolean, todoListID: string) => {
-  return { type: CHANGE_TASK_STATUS, taskID, isDone, todoListID } as const;
+  return { type: 'CHANGE-TASK-STATUS', taskID, isDone, todoListID } as const;
 };
 
 export const changeTaskTitleAC = (taskID: string, title: string, todoListID: string) => {
-  return { type: CHANGE_TASK_TITLE, taskID, title, todoListID } as const;
+  return { type: 'CHANGE-TASK-TITLE', taskID, title, todoListID } as const;
 };
