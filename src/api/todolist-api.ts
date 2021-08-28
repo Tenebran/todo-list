@@ -22,6 +22,50 @@ export type TodolistType = {
   title: string;
 };
 
+export type TaskType = {
+  description: string;
+  title: string;
+  completed: boolean;
+  status: TaskStatuses;
+  priority: TaskPrioties;
+  startDate: string;
+  deadline: string;
+  id: string;
+  todoListId: string;
+  order: number;
+  addedDate: string;
+};
+export enum TaskStatuses {
+  New = 0,
+  InProgress = 1,
+  Completed = 2,
+  Draft = 3,
+}
+
+export enum TaskPrioties {
+  Low = 0,
+  Middle = 1,
+  Hi = 2,
+  Urgently = 3,
+  Later = 4,
+}
+
+type ResponseType<D = {}> = {
+  resultCode: number;
+  messages: Array<string>;
+  data: D;
+};
+
+export type UpdateTaskType = {
+  title: string;
+  description: string;
+  completed: boolean;
+  status: number;
+  priority: number;
+  startDate: string;
+  deadline: string;
+};
+
 export const todolistAPI = {
   getTodos() {
     return instance.get<Array<TodolistType>>('/todo-lists');
@@ -36,5 +80,13 @@ export const todolistAPI = {
   },
   deleteTodo(todolistId: string) {
     return axios.delete<CommonResponseType>(`/todo-lists/${todolistId}`);
+  },
+  createTask(todolistId: string, taskTitile: string) {
+    return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {
+      title: taskTitile,
+    });
+  },
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
+    return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
   },
 };

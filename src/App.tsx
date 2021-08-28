@@ -12,13 +12,14 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { TaskType } from './Todolist';
 import { Menu } from '@material-ui/icons';
 import {
   addTodolistAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
+  FilterValuesType,
   removeTodoListAC,
+  TodolistDomainType,
 } from './store/todolists-reducers';
 import {
   addTaskAC,
@@ -28,21 +29,14 @@ import {
 } from './store/tasks-reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppRootStateType } from './store/store';
-
-export type FilterValuesType = 'all' | 'active' | 'completed';
-
-export type todoListType = {
-  id: string;
-  title: string;
-  filter: FilterValuesType;
-};
+import { TaskStatuses, TaskType } from './api/todolist-api';
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
 function App() {
-  let todolist = useSelector<AppRootStateType, todoListType[]>(state => state.todolists);
+  let todolist = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
 
   const dispatch = useDispatch();
 
@@ -61,8 +55,8 @@ function App() {
   );
 
   const changeTaskStatus = useCallback(
-    (id: string, isDone: boolean, todoListID: string) => {
-      dispatch(changeTaskStatusAC(id, isDone, todoListID));
+    (id: string, status: TaskStatuses, todoListID: string) => {
+      dispatch(changeTaskStatusAC(id, status, todoListID));
     },
     [dispatch]
   );

@@ -2,11 +2,12 @@ import { Button, Checkbox, createStyles, IconButton, makeStyles, Theme } from '@
 import { Delete } from '@material-ui/icons';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { FilterValuesType } from './App';
+import { TaskStatuses, TaskType } from './api/todolist-api';
 import AddItemForm from './modules/components/AddItemForm/AddItemForm';
 import EditTask from './modules/components/EditTask/EditTask';
 import Task from './modules/components/Task/Task';
 import { AppRootStateType } from './store/store';
+import { FilterValuesType } from './store/todolists-reducers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,12 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-
 type PropsType = {
   title: string;
   removeTask: (taskId: string, TodolistId: string) => void;
@@ -34,7 +29,7 @@ type PropsType = {
   todoListID: string;
   changeTaskTitle: (taskid: string, title: string, todoListID: string) => void;
   changeTodoListTitle: (title: string, TodolistId: string) => void;
-  changeTaskStatus: (id: string, isDone: boolean, todoListID: string) => void;
+  changeTaskStatus: (id: string, status: TaskStatuses, todoListID: string) => void;
 };
 
 const Todolist = React.memo((props: PropsType) => {
@@ -49,22 +44,22 @@ const Todolist = React.memo((props: PropsType) => {
     [props.addTask, props.todoListID]
   );
 
-  const onAllClickHandler = useCallback(
-    () => props.changeFilter('all', props.todoListID),
-    [props.changeFilter, props.todoListID]
-  );
-  const onActiveClickHandler = useCallback(
-    () => props.changeFilter('active', props.todoListID),
-    [props.changeFilter, props.todoListID]
-  );
+  const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todoListID), [
+    props.changeFilter,
+    props.todoListID,
+  ]);
+  const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todoListID), [
+    props.changeFilter,
+    props.todoListID,
+  ]);
   const onCompletedClickHandler = useCallback(
     () => props.changeFilter('completed', props.todoListID),
     [props.changeFilter, props.todoListID]
   );
-  const onCklicDeleteTodoList = useCallback(
-    () => props.removeTodolist(props.todoListID),
-    [props.removeTodolist, props.todoListID]
-  );
+  const onCklicDeleteTodoList = useCallback(() => props.removeTodolist(props.todoListID), [
+    props.removeTodolist,
+    props.todoListID,
+  ]);
   const changeTodoListTitleHandler = useCallback(
     (title: string) => props.changeTodoListTitle(title, props.todoListID),
     [props.changeTodoListTitle, props.todoListID]
@@ -72,10 +67,10 @@ const Todolist = React.memo((props: PropsType) => {
 
   let tasksForTodolist = tasks;
   if (props.filter === 'active') {
-    tasksForTodolist = tasks.filter(t => t.isDone === false);
+    tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.New);
   }
   if (props.filter === 'completed') {
-    tasksForTodolist = tasks.filter(t => t.isDone === true);
+    tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.Completed);
   }
 
   return (

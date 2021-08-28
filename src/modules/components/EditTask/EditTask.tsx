@@ -1,9 +1,10 @@
 import { TextField } from '@material-ui/core';
 import React, { ChangeEvent, useState } from 'react';
+import { TaskStatuses } from '../../../api/todolist-api';
 
 type EditTaskProps = {
   title: string;
-  name?: boolean;
+  name?: TaskStatuses;
   changeTaskTitle: (title: string) => void;
 };
 
@@ -24,7 +25,10 @@ export default function EditTask(props: EditTaskProps) {
   return editMode ? (
     <TextField value={title} autoFocus onBlur={offEditMode} onChange={onChangeHandler}></TextField>
   ) : (
-    <span onDoubleClick={onEditMode} className={props.name ? 'is-done' : ''}>
+    <span
+      onDoubleClick={onEditMode}
+      className={props.name === TaskStatuses.Completed ? 'is-done' : ''}
+    >
       {props.title}
     </span>
   );
