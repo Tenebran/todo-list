@@ -1,12 +1,13 @@
 import { Button, Checkbox, createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TaskStatuses, TaskType } from './api/todolist-api';
 import AddItemForm from './modules/components/AddItemForm/AddItemForm';
 import EditTask from './modules/components/EditTask/EditTask';
 import Task from './modules/components/Task/Task';
 import { AppRootStateType } from './store/store';
+import { fetchSetTaskTC } from './store/tasks-reducers';
 import { FilterValuesType } from './store/todolists-reducers';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,6 +37,12 @@ const Todolist = React.memo((props: PropsType) => {
   let tasks = useSelector<AppRootStateType, Array<TaskType>>(
     state => state.tasks[props.todoListID]
   );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSetTaskTC(props.todoListID));
+  }, []);
   const classes = useStyles();
   const addTask = useCallback(
     (title: string) => {

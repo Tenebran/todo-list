@@ -1,10 +1,10 @@
-import { TasksStateType, todoListType } from '../App';
+import { TasksStateType } from '../App';
 import { tasksReducers } from './tasks-reducers';
-import { addTodolistAC, todoListsReducers } from './todolists-reducers';
+import { addTodolistAC, TodolistDomainType, todoListsReducers } from './todolists-reducers';
 
 test('new property with array should be added when new todolis is added', () => {
   const startTaskState: TasksStateType = {};
-  const startTodolistsState: Array<todoListType> = [];
+  const startTodolistsState: Array<TodolistDomainType> = [];
 
   const action = addTodolistAC('new todolist');
   const endTasksState = tasksReducers(startTaskState, action);

@@ -66,6 +66,12 @@ export type UpdateTaskType = {
   deadline: string;
 };
 
+type GetTaskResponse = {
+  error: string | null;
+  totalCount: number;
+  items: Array<TaskType>;
+};
+
 export const todolistAPI = {
   getTodos() {
     return instance.get<Array<TodolistType>>('/todo-lists');
@@ -88,5 +94,8 @@ export const todolistAPI = {
   },
   updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
     return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+  },
+  getTasks(todolistID: string) {
+    return instance.get<GetTaskResponse>(`todo-lists/${todolistID}/tasks`);
   },
 };
