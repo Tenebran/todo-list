@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UpdateDomainTaskModelType } from '../store/tasks-reducers';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -78,24 +79,27 @@ export const todolistAPI = {
   },
 
   createTodo(title: string) {
-    return axios.post<CommonResponseType<{ item: TodolistType }>>('/todo-lists', { title });
+    return instance.post<CommonResponseType<{ item: TodolistType }>>('/todo-lists', { title });
   },
 
   updateTodo(todolistId: string, title: string) {
-    return axios.put<CommonResponseType>(`/todo-lists/${todolistId}`, { title });
+    return instance.put<CommonResponseType>(`/todo-lists/${todolistId}`, { title });
   },
   deleteTodo(todolistId: string) {
-    return axios.delete<CommonResponseType>(`/todo-lists/${todolistId}`);
+    return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}`);
   },
   createTask(todolistId: string, taskTitile: string) {
     return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {
       title: taskTitile,
     });
   },
-  updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
+  updateTask(todolistId: string, taskId: string, model: UpdateDomainTaskModelType) {
     return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
   },
   getTasks(todolistID: string) {
     return instance.get<GetTaskResponse>(`todo-lists/${todolistID}/tasks`);
+  },
+  deleteTasks(todolistID: string, taskId: string) {
+    return instance.delete<ResponseType>(`todo-lists/${todolistID}/tasks/${taskId}`);
   },
 };
