@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { todolistAPI, TodolistType } from '../api/todolist-api';
-import { appSetStatusAC } from './app-reducer';
+import { appSetStatusAC, RequestStatusType } from './app-reducer';
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -11,7 +11,7 @@ export const todoListsReducers = (
   switch (action.type) {
     case 'SET-TODOLIST': {
       return action.todolist.map(list => {
-        return { ...list, filter: 'all' };
+        return { ...list, filter: 'all', entityStatus: 'idle' };
       });
     }
 
@@ -20,7 +20,11 @@ export const todoListsReducers = (
     }
 
     case 'ADD-TODOLIST': {
-      const newTodolist: TodolistDomainType = { ...action.todolist, filter: 'all' };
+      const newTodolist: TodolistDomainType = {
+        ...action.todolist,
+        filter: 'all',
+        entityStatus: 'idle',
+      };
       return [newTodolist, ...todolists];
     }
 
@@ -108,4 +112,5 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 
 export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType;
+  entityStatus: RequestStatusType;
 };
