@@ -8,6 +8,7 @@ import {
   Container,
   Grid,
   IconButton,
+  LinearProgress,
   Paper,
   Toolbar,
   Typography,
@@ -26,13 +27,16 @@ import { addTaskTC, deleteTaskTC, updateTaskTC } from './store/tasks-reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppRootStateType } from './store/store';
 import { TaskStatuses, TaskType, todolistAPI } from './api/todolist-api';
+import { ErrorSnackbar } from './modules/components/ErrorSnackbar/ErrorSnackbar';
+import { RequestStatusType } from './store/app-reducer';
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
 function App() {
-  let todolist = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
+  const todolist = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
+  const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
 
   const dispatch = useDispatch();
 
@@ -113,6 +117,7 @@ function App() {
             filter={list.filter}
             changeTaskTitle={changeTaskTitle}
             changeTodoListTitle={changeTodoListTitle}
+            loadingStatus={loadingStatus}
           />
         </Paper>
       </Grid>
@@ -131,7 +136,10 @@ function App() {
             Login
           </Button>
         </Toolbar>
+
+        {loadingStatus === 'loading' && <LinearProgress color="secondary" />}
       </AppBar>
+      <ErrorSnackbar />
       <Container fixed>
         <Grid container className="add-todolist">
           <AddItemForm addItem={addTodoList} />

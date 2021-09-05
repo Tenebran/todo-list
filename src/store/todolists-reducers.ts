@@ -1,22 +1,6 @@
 import { Dispatch } from 'redux';
-import { v1 } from 'uuid';
 import { todolistAPI, TodolistType } from '../api/todolist-api';
-
-type ActionType =
-  | ReturnType<typeof removeTodoListAC>
-  | ReturnType<typeof addTodolistAC>
-  | ReturnType<typeof changeTodolistTitleAC>
-  | ReturnType<typeof changeTodolistFilterAC>
-  | ReturnType<typeof setTodolistAC>;
-
-export const todoListID1 = v1();
-export const todoListID2 = v1();
-
-export type FilterValuesType = 'all' | 'active' | 'completed';
-
-export type TodolistDomainType = TodolistType & {
-  filter: FilterValuesType;
-};
+import { appSetStatusAC } from './app-reducer';
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -78,28 +62,50 @@ export const setTodolistAC = (todolist: Array<TodolistType>) => {
   return { type: 'SET-TODOLIST', todolist } as const;
 };
 
-export const fetchTodolistsTC = (dispatch: Dispatch) => {
+export const fetchTodolistsTC = (dispatch: Dispatch<ActionType>) => {
+  dispatch(appSetStatusAC('loading'));
   todolistAPI.getTodos().then(res => {
     dispatch(setTodolistAC(res.data));
+    dispatch(appSetStatusAC('succeeded'));
   });
 };
 
-export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
+export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch<ActionType>) => {
+  dispatch(appSetStatusAC('loading'));
   todolistAPI.deleteTodo(todolistId).then(res => {
     dispatch(removeTodoListAC(todolistId));
+    dispatch(appSetStatusAC('succeeded'));
   });
 };
 
-export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
+export const addTodolistTC = (title: string) => (dispatch: Dispatch<ActionType>) => {
+  dispatch(appSetStatusAC('loading'));
   todolistAPI.createTodo(title).then(res => {
     dispatch(addTodolistAC(res.data.data.item));
+    dispatch(appSetStatusAC('succeeded'));
   });
 };
 
 export const changeTodolistTitleTC = (todolistID: string, title: string) => (
-  dispatch: Dispatch
+  dispatch: Dispatch<ActionType>
 ) => {
+  dispatch(appSetStatusAC('loading'));
   todolistAPI.updateTodo(todolistID, title).then(res => {
     dispatch(changeTodolistTitleAC(todolistID, title));
+    dispatch(appSetStatusAC('succeeded'));
   });
+};
+
+type ActionType =
+  | ReturnType<typeof removeTodoListAC>
+  | ReturnType<typeof addTodolistAC>
+  | ReturnType<typeof changeTodolistTitleAC>
+  | ReturnType<typeof changeTodolistFilterAC>
+  | ReturnType<typeof setTodolistAC>
+  | ReturnType<typeof appSetStatusAC>;
+
+export type FilterValuesType = 'all' | 'active' | 'completed';
+
+export type TodolistDomainType = TodolistType & {
+  filter: FilterValuesType;
 };

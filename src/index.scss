@@ -176,14 +176,13 @@ html,
 body {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   cursor: default;
 }
 
 ////////////////////////////// CSS STYLE RESET //////////////////////////////
 
 body {
-  margin: 0;
+  margin: 100px 0 0 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;

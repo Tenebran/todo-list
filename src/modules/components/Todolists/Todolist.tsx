@@ -9,6 +9,7 @@ import Task from '../Task/Task';
 import { AppRootStateType } from '../../../store/store';
 import { fetchSetTaskTC } from '../../../store/tasks-reducers';
 import { FilterValuesType } from '../../../store/todolists-reducers';
+import { RequestStatusType } from '../../../store/app-reducer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,6 +32,7 @@ type PropsType = {
   changeTaskTitle: (taskid: string, title: string, todoListID: string) => void;
   changeTodoListTitle: (title: string, TodolistId: string) => void;
   changeTaskStatus: (id: string, status: TaskStatuses, todoListID: string) => void;
+  loadingStatus: RequestStatusType;
 };
 
 const Todolist = React.memo((props: PropsType) => {
