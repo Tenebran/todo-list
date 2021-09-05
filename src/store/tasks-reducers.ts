@@ -1,11 +1,5 @@
 import { v1 } from 'uuid';
-import {
-  TaskPrioties,
-  TaskStatuses,
-  TaskType,
-  todolistAPI,
-  UpdateTaskType,
-} from '../api/todolist-api';
+import { TaskType, todolistAPI, UpdateTaskType } from '../api/todolist-api';
 import { TasksStateType } from '../App';
 import { addTodolistAC, removeTodoListAC, setTodolistAC } from './todolists-reducers';
 import { Dispatch } from 'redux';
@@ -98,9 +92,6 @@ export const updateTaskAC = (
   return { type: 'UPDATE-TASK', taskID, model, todoListID } as const;
 };
 
-// export const changeTaskTitleAC = (taskID: string, title: string, todoListID: string) => {
-//   return { type: 'CHANGE-TASK-TITLE', taskID, title, todoListID } as const;
-// };
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
   return { type: 'SET-TASKS', tasks, todolistId } as const;
 };
@@ -145,7 +136,7 @@ export const updateTaskTC = (
     console.warn('Task not found in the state');
     return;
   }
-  const apimodel: UpdateDomainTaskModelType = {
+  const apimodel: UpdateTaskType = {
     title: task.title,
     description: task.description,
     completed: task.completed,

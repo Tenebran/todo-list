@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
-import './App.css';
-import Todolist from './Todolist';
+import './App.scss';
+import Todolist from './modules/components/Todolists/Todolist';
 import AddItemForm from './modules/components/AddItemForm/AddItemForm';
 import {
   AppBar,
@@ -14,25 +14,15 @@ import {
 } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import {
-  addTodolistAC,
   addTodolistTC,
   changeTodolistFilterAC,
-  changeTodolistTitleAC,
   changeTodolistTitleTC,
   fetchTodolistsTC,
   FilterValuesType,
-  removeTodoListAC,
   removeTodolistTC,
-  setTodolistAC,
   TodolistDomainType,
 } from './store/todolists-reducers';
-import {
-  addTaskAC,
-  addTaskTC,
-  deleteTaskTC,
-  removeTaskAC,
-  updateTaskTC,
-} from './store/tasks-reducers';
+import { addTaskTC, deleteTaskTC, updateTaskTC } from './store/tasks-reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppRootStateType } from './store/store';
 import { TaskStatuses, TaskType, todolistAPI } from './api/todolist-api';
