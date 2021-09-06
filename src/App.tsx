@@ -34,13 +34,20 @@ export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
-function App() {
+type PropsType = {
+  demo?: boolean;
+};
+
+function App({ demo = false }: PropsType) {
   const todolist = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
   const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (demo) {
+      return;
+    }
     dispatch(fetchTodolistsTC);
   }, []);
 
@@ -107,17 +114,16 @@ function App() {
       <Grid item key={list.id}>
         <Paper className="paper-wrapepr" elevation={5}>
           <Todolist
-            todoListID={list.id}
+            todolist={list}
             removeTodolist={removeTodolist}
-            title={list.title}
             removeTask={removeTask}
             changeFilter={changeFilter}
             addTask={addTask}
             changeTaskStatus={changeTaskStatus}
-            filter={list.filter}
             changeTaskTitle={changeTaskTitle}
             changeTodoListTitle={changeTodoListTitle}
             loadingStatus={loadingStatus}
+            demo={demo}
           />
         </Paper>
       </Grid>

@@ -7,14 +7,12 @@ import AddItemForm from './AddItemForm';
 export default {
   title: 'Todolist/AddItemForm',
   component: AddItemForm,
-  argTypes: {
-    addItem: (title: string) => {},
-  },
 } as ComponentMeta<typeof AddItemForm>;
 
-const Template: ComponentStory<typeof AddItemForm> = args => <AddItemForm {...args} />;
+export const AddItemFormBaseExample = (props: any) => {
+  return <AddItemForm addItem={action('Button inside form clicked')} />;
+};
 
-export const Primary = Template.bind({});
-Primary.args = {
-  addItem: action('Button inside form clicked'),
+export const AddItemFormDisableBasedExample = (props: any) => {
+  return <AddItemForm addItem={action('Button inside form clicked')} disabled={true} />;
 };

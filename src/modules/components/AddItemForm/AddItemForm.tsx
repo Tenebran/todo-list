@@ -4,6 +4,7 @@ import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react'
 
 type addItemForPropsType = {
   addItem: (title: string) => void;
+  disabled?: boolean;
 };
 
 const AddItemForm = React.memo((props: addItemForPropsType) => {
@@ -45,8 +46,9 @@ const AddItemForm = React.memo((props: addItemForPropsType) => {
         size={'small'}
         error={!!error}
         helperText={error ? error : ''}
+        disabled={props.disabled}
       />
-      <IconButton onClick={addItem} color={'primary'} size={'small'}>
+      <IconButton onClick={addItem} color={'primary'} size={'small'} disabled={props.disabled}>
         <AddBox fontSize={'large'} />
       </IconButton>
     </div>

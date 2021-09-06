@@ -40,6 +40,12 @@ export const todoListsReducers = (
       );
     }
 
+    case 'SET-TODOLIST-STATUS': {
+      return todolists.map(list =>
+        list.id === action.todolistID ? { ...list, entityStatus: action.entityStatus } : list
+      );
+    }
+
     default: {
       return todolists;
     }
@@ -76,9 +82,11 @@ export const fetchTodolistsTC = (dispatch: Dispatch<ActionType>) => {
 
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch<ActionType>) => {
   dispatch(appSetStatusAC('loading'));
+  dispatch(setTodolistLoadingStatusAC('loading', todolistId));
   todolistAPI.deleteTodo(todolistId).then(res => {
     dispatch(removeTodoListAC(todolistId));
     dispatch(appSetStatusAC('succeeded'));
+    dispatch(setTodolistLoadingStatusAC('succeeded', todolistId));
   });
 };
 
@@ -94,10 +102,15 @@ export const changeTodolistTitleTC = (todolistID: string, title: string) => (
   dispatch: Dispatch<ActionType>
 ) => {
   dispatch(appSetStatusAC('loading'));
+  dispatch(setTodolistLoadingStatusAC('loading', todolistID));
   todolistAPI.updateTodo(todolistID, title).then(res => {
     dispatch(changeTodolistTitleAC(todolistID, title));
     dispatch(appSetStatusAC('succeeded'));
   });
+};
+
+export const setTodolistLoadingStatusAC = (entityStatus: RequestStatusType, todolistID: string) => {
+  return { type: 'SET-TODOLIST-STATUS', entityStatus, todolistID } as const;
 };
 
 type ActionType =
@@ -106,7 +119,8 @@ type ActionType =
   | ReturnType<typeof changeTodolistTitleAC>
   | ReturnType<typeof changeTodolistFilterAC>
   | ReturnType<typeof setTodolistAC>
-  | ReturnType<typeof appSetStatusAC>;
+  | ReturnType<typeof appSetStatusAC>
+  | ReturnType<typeof setTodolistLoadingStatusAC>;
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
