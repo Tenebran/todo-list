@@ -5,6 +5,7 @@ import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react'
 type addItemForPropsType = {
   addItem: (title: string) => void;
   disabled?: boolean;
+  classTitle?: string;
 };
 
 const AddItemForm = React.memo((props: addItemForPropsType) => {
@@ -36,7 +37,7 @@ const AddItemForm = React.memo((props: addItemForPropsType) => {
   };
 
   return (
-    <div>
+    <div className={props.classTitle}>
       <TextField
         value={title}
         onChange={onChangeHandler}

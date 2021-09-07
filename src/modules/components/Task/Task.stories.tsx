@@ -5,7 +5,7 @@ import Task from './Task';
 import { TaskPrioties, TaskStatuses } from '../../../api/todolist-api';
 
 export default {
-  title: 'Example/Task',
+  title: 'Todolist/Task',
   component: Task,
   argTypes: {
     removeTask: (taskId: string, TodolistId: string) => {},

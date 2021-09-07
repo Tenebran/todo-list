@@ -1,8 +1,11 @@
 import { Checkbox, IconButton } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Delete, Favorite, FavoriteBorder } from '@material-ui/icons';
 import React, { useCallback } from 'react';
 import { TaskStatuses, TaskType } from '../../../api/todolist-api';
 import EditTask from '../EditTask/EditTask';
+import './Task.scss';
+import LocationOffIcon from '@material-ui/icons/LocationOff';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 type PropsType = {
   task: TaskType;
@@ -28,12 +31,14 @@ const Task = React.memo((props: PropsType) => {
   };
 
   return (
-    <li key={props.task.id}>
+    <li key={props.task.id} className="task">
       <Checkbox
         size={'small'}
-        color={'primary'}
+        color={'secondary'}
         checked={props.task.status === TaskStatuses.Completed ? true : false}
         onChange={e => onChangeHandler(e)}
+        icon={<LocationOffIcon />}
+        checkedIcon={<LocationOnIcon />}
       />
 
       <EditTask

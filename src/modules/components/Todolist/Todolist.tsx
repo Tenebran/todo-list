@@ -10,6 +10,7 @@ import { AppRootStateType } from '../../../store/store';
 import { fetchSetTaskTC } from '../../../store/tasks-reducers';
 import { FilterValuesType, TodolistDomainType } from '../../../store/todolists-reducers';
 import { RequestStatusType } from '../../../store/app-reducer';
+import './Todolist.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -100,7 +101,7 @@ const Todolist = React.memo(({ demo = false, ...props }: PropsType) => {
         </IconButton>
       </h3>
       <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'} />
-      <ul>
+      <ul className="todolist">
         {tasksForTodolist.map(t => (
           <Task
             key={t.id}
