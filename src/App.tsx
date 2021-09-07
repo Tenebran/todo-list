@@ -1,18 +1,11 @@
 import React from 'react';
 import './App.scss';
-import { AppBar, Button, IconButton, LinearProgress, Toolbar, Typography } from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
-import { AppRootStateType } from './store/store';
 import { TaskType } from './api/todolist-api';
 import { ErrorSnackbar } from './modules/components/ErrorSnackbar/ErrorSnackbar';
-import { RequestStatusType } from './store/app-reducer';
 import { Todolists } from './modules/components/Todolists/Todolists';
 import { Header } from './modules/components/Header/Header';
-
-export type TasksStateType = {
-  [key: string]: Array<TaskType>;
-};
+import { BrowserRouter, Route } from 'react-router-dom';
+import { Login } from './modules/components/Login/Login';
 
 type PropsType = {
   demo?: boolean;
@@ -20,11 +13,14 @@ type PropsType = {
 
 function App({ demo = false }: PropsType) {
   return (
-    <div className="App">
-      <Header />
-      <ErrorSnackbar />
-      <Todolists demo={demo} />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <ErrorSnackbar />
+        <Route exact path={'/'} render={() => <Todolists demo={demo} />} />
+        <Route path={'/login'} render={() => <Login />} />
+      </div>
+    </BrowserRouter>
   );
 }
 
