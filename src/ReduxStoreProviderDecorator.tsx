@@ -4,15 +4,17 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { v1 } from 'uuid';
 import { TaskPrioties, TaskStatuses } from './api/todolist-api';
-import { appReducer } from './store/app-reducer';
-import { AppRootStateType } from './store/store';
-import { tasksReducers } from './store/tasks-reducers';
-import { todoListsReducers } from './store/todolists-reducers';
+import { appReducer } from './modules/store/app-reducer';
+import { AppRootStateType } from './modules/store/store';
+import { tasksReducers } from './modules/features/Todolists/tasks-reducers';
+import { todoListsReducers } from './modules/features/Todolists/todolists-reducers';
+import { loginReducers } from './modules/features/Login/login-reducers';
 
 const rootReducer = combineReducers({
   tasks: tasksReducers,
   todolists: todoListsReducers,
   app: appReducer,
+  login: loginReducers,
 });
 
 const initialGlobalState = {
@@ -95,6 +97,10 @@ const initialGlobalState = {
   app: {
     error: null,
     status: 'idle',
+    isInitialized: false,
+  },
+  login: {
+    isLoggedIn: false,
   },
 };
 

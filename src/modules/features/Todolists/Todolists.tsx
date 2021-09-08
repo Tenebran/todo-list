@@ -2,9 +2,9 @@ import { Grid, Paper, Container } from '@material-ui/core';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskStatuses, TaskType } from '../../../api/todolist-api';
-import { RequestStatusType } from '../../../store/app-reducer';
-import { AppRootStateType } from '../../../store/store';
-import { addTaskTC, deleteTaskTC, updateTaskTC } from '../../../store/tasks-reducers';
+import { RequestStatusType } from '../../store/app-reducer';
+import { AppRootStateType } from '../../store/store';
+import { addTaskTC, deleteTaskTC, updateTaskTC } from './tasks-reducers';
 import {
   addTodolistTC,
   changeTodolistFilterAC,
@@ -13,9 +13,10 @@ import {
   FilterValuesType,
   removeTodolistTC,
   TodolistDomainType,
-} from '../../../store/todolists-reducers';
-import AddItemForm from '../AddItemForm/AddItemForm';
-import Todolist from '../Todolist/Todolist';
+} from './todolists-reducers';
+import AddItemForm from '../../components/AddItemForm/AddItemForm';
+import Todolist from './Todolist/Todolist';
+import { Redirect } from 'react-router-dom';
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
@@ -23,16 +24,17 @@ export type TasksStateType = {
 
 type PropsType = {
   demo?: boolean;
+  loadingStatus: RequestStatusType;
 };
 
 export const Todolists = (props: PropsType) => {
   const todolist = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
-  const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.isLoggedIn);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (props.demo) {
+    if (props.demo || !isLoggedIn) {
       return;
     }
     dispatch(fetchTodolistsTC);
@@ -96,6 +98,10 @@ export const Todolists = (props: PropsType) => {
     [dispatch]
   );
 
+  if (!isLoggedIn) {
+    return <Redirect to={'/login'} />;
+  }
+
   return (
     <Container fixed>
       <Grid container className="add-todolist">
@@ -116,7 +122,7 @@ export const Todolists = (props: PropsType) => {
                   changeTaskStatus={changeTaskStatus}
                   changeTaskTitle={changeTaskTitle}
                   changeTodoListTitle={changeTodoListTitle}
-                  loadingStatus={loadingStatus}
+                  loadingStatus={props.loadingStatus}
                   demo={props.demo}
                 />
               </Paper>

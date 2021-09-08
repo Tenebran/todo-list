@@ -1,9 +1,9 @@
-import { TaskType, todolistAPI, UpdateTaskType } from '../api/todolist-api';
+import { TaskType, todolistAPI, UpdateTaskType } from '../../../api/todolist-api';
 import { addTodolistAC, removeTodoListAC, setTodolistAC } from './todolists-reducers';
 import { Dispatch } from 'redux';
-import { AppRootStateType } from './store';
-import { appSetErrorAC, appSetStatusAC } from './app-reducer';
-import { TasksStateType } from '../modules/components/Todolists/Todolists';
+import { TasksStateType } from './Todolists';
+import { appSetErrorAC, appSetStatusAC } from '../../store/app-reducer';
+import { AppRootStateType } from '../../store/store';
 
 const initialState: TasksStateType = {};
 

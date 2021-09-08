@@ -1,8 +1,8 @@
 import { Checkbox, IconButton } from '@material-ui/core';
 import { Delete, Favorite, FavoriteBorder } from '@material-ui/icons';
 import React, { useCallback } from 'react';
-import { TaskStatuses, TaskType } from '../../../api/todolist-api';
-import EditTask from '../EditTask/EditTask';
+import { TaskStatuses, TaskType } from '../../../../../api/todolist-api';
+import EditTask from '../../../../components/EditTask/EditTask';
 import './Task.scss';
 import LocationOffIcon from '@material-ui/icons/LocationOff';
 import LocationOnIcon from '@material-ui/icons/LocationOn';

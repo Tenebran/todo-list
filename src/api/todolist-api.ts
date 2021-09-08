@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UpdateDomainTaskModelType } from '../store/tasks-reducers';
+import { UpdateDomainTaskModelType } from '../modules/features/Todolists/tasks-reducers';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -101,5 +101,24 @@ export const todolistAPI = {
   },
   deleteTasks(todolistID: string, taskId: string) {
     return instance.delete<ResponseType>(`todo-lists/${todolistID}/tasks/${taskId}`);
+  },
+};
+
+export type LoginParamsType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha?: string;
+};
+
+export const authAPI = {
+  login(data: LoginParamsType) {
+    return instance.post<ResponseType<{ userId?: number }>>(`/auth/login`, data);
+  },
+  me() {
+    return instance.get<ResponseType<{ id: number; email: string; login: string }>>(`/auth/me`);
+  },
+  logOut() {
+    return instance.delete<ResponseType<{ userId?: number }>>(`/auth/login`);
   },
 };

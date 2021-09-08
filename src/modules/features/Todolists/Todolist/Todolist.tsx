@@ -2,15 +2,16 @@ import { Button, Checkbox, createStyles, IconButton, makeStyles, Theme } from '@
 import { Delete } from '@material-ui/icons';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TaskStatuses, TaskType } from '../../../api/todolist-api';
-import AddItemForm from '../AddItemForm/AddItemForm';
-import EditTask from '../EditTask/EditTask';
-import Task from '../Task/Task';
+import { TaskStatuses, TaskType } from '../../../../api/todolist-api';
+import AddItemForm from '../../../components/AddItemForm/AddItemForm';
+import EditTask from '../../../components/EditTask/EditTask';
+import Task from './Task/Task';
 import { AppRootStateType } from '../../../store/store';
-import { fetchSetTaskTC } from '../../../store/tasks-reducers';
-import { FilterValuesType, TodolistDomainType } from '../../../store/todolists-reducers';
+import { fetchSetTaskTC } from '../tasks-reducers';
+import { FilterValuesType, TodolistDomainType } from '../todolists-reducers';
 import { RequestStatusType } from '../../../store/app-reducer';
 import './Todolist.scss';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +37,7 @@ type PropsType = {
 };
 
 const Todolist = React.memo(({ demo = false, ...props }: PropsType) => {
-  let tasks = useSelector<AppRootStateType, Array<TaskType>>(
+  const tasks = useSelector<AppRootStateType, Array<TaskType>>(
     state => state.tasks[props.todolist.id]
   );
 
@@ -84,8 +85,6 @@ const Todolist = React.memo(({ demo = false, ...props }: PropsType) => {
   if (props.todolist.filter === 'completed') {
     tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.Completed);
   }
-
-  console.log(props.todolist.entityStatus);
 
   return (
     <div>

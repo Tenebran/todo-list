@@ -1,6 +1,8 @@
+import axios from 'axios';
 import { Dispatch } from 'redux';
-import { todolistAPI, TodolistType } from '../api/todolist-api';
-import { appSetStatusAC, RequestStatusType } from './app-reducer';
+import { todolistAPI, TodolistType } from '../../../api/todolist-api';
+import { appSetErrorAC, appSetStatusAC, RequestStatusType } from '../../store/app-reducer';
+import { AxiosError } from 'axios';
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -74,10 +76,15 @@ export const setTodolistAC = (todolist: Array<TodolistType>) => {
 
 export const fetchTodolistsTC = (dispatch: Dispatch<ActionType>) => {
   dispatch(appSetStatusAC('loading'));
-  todolistAPI.getTodos().then(res => {
-    dispatch(setTodolistAC(res.data));
-    dispatch(appSetStatusAC('succeeded'));
-  });
+  todolistAPI
+    .getTodos()
+    .then(res => {
+      dispatch(setTodolistAC(res.data));
+      dispatch(appSetStatusAC('succeeded'));
+    })
+    .catch((error: AxiosError) => {
+      dispatch(appSetErrorAC(error.message));
+    });
 };
 
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch<ActionType>) => {
@@ -120,7 +127,8 @@ type ActionType =
   | ReturnType<typeof changeTodolistFilterAC>
   | ReturnType<typeof setTodolistAC>
   | ReturnType<typeof appSetStatusAC>
-  | ReturnType<typeof setTodolistLoadingStatusAC>;
+  | ReturnType<typeof setTodolistLoadingStatusAC>
+  | ReturnType<typeof appSetErrorAC>;
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 

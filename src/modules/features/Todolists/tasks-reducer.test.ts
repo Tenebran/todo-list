@@ -1,5 +1,5 @@
 import { addTodolistAC, removeTodoListAC } from './todolists-reducers';
-import { TasksStateType } from '../App';
+import { TasksStateType } from '../../../App';
 import {
   removeTaskAC,
   tasksReducers,
@@ -7,7 +7,7 @@ import {
   changeTaskStatusAC,
   changeTaskTitleAC,
 } from './tasks-reducers';
-import { TaskPrioties, TaskStatuses } from '../api/todolist-api';
+import { TaskPrioties, TaskStatuses } from '../../../api/todolist-api';
 
 let startState: TasksStateType;
 

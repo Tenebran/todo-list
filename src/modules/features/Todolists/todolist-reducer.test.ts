@@ -10,7 +10,7 @@ import {
   setTodolistLoadingStatusAC,
 } from './todolists-reducers';
 import { v1 } from 'uuid';
-import { RequestStatusType } from './app-reducer';
+import { RequestStatusType } from '../../store/app-reducer';
 
 let startState: Array<TodolistDomainType> = [];
 let todoListId1 = v1();
